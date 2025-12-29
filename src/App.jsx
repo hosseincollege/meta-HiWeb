@@ -36,7 +36,7 @@ function normalizeLesson(raw, name) {
         // بقیه دروس
         name === "عیب‌یابی" ? "#2a9d8f" :
         name === "RRU" ? "#f4a261" :
-        name === "برق و تجهیزات" ? "#fcca46" :
+        name === "برق" ? "#fcca46" :
 
         name === "ایمنی و HSE" ? "#d90429" :
         name === "Rack" ? "#06d6a0" :
@@ -72,7 +72,7 @@ const LESSONS = {
   // بقیه بدون تغییر
   troubleshooting: normalizeLesson(troubleshooting, "عیب‌یابی"),
   RRU: normalizeLesson(RRU, "RRU"),
-  power: normalizeLesson(power, "برق و تجهیزات"),
+  power: normalizeLesson(power, "برق"),
 
   safety: normalizeLesson(safety, "ایمنی و HSE"),
   Rack: normalizeLesson(Rack, "Rack"),
