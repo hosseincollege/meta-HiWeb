@@ -11,14 +11,14 @@ import mobilesite from "./lessons/mobilesite";
 // بقیه دروس
 
 import troubleshooting from "./lessons/troubleshooting";
-import support from "./lessons/support";
+import RRU from "./lessons/RRU";
 import power from "./lessons/power";
 
 import safety from "./lessons/safety";
-import height from "./lessons/height";
-import fiberadio from "./lessons/fiberadio";
-import mission from "./lessons/mission";
-import civil from "./lessons/civil";
+import Rack from "./lessons/Rack";
+import fiber from "./lessons/fiber";
+import Sector from "./lessons/Sector";
+import radio from "./lessons/radio";
 import field from "./lessons/field";
 
 function normalizeLesson(raw, name) {
@@ -28,21 +28,21 @@ function normalizeLesson(raw, name) {
       color:
         // ✅ چهار درس اول – اولِ رنگ‌دهی
         name === "جریان داده" ? "#457b9d" :
-        name === "ارتباطات رادیویی" ? "#e63946" :
+        name === "تلکام" ? "#e63946" :
         name === "لینک‌های رادیویی" ? "#7b2cbf" :
-        name === "مودم‌های 4G و DSL" ? "#118ab2" :
+        name === "مودم‌" ? "#118ab2" :
         name === "سایت موبایل" ? "#ef476f" :
 
         // بقیه دروس
         name === "عیب‌یابی" ? "#2a9d8f" :
-        name === "پشتیبانی سایت" ? "#f4a261" :
+        name === "RRU" ? "#f4a261" :
         name === "برق و تجهیزات" ? "#fcca46" :
 
         name === "ایمنی و HSE" ? "#d90429" :
-        name === "کار در ارتفاع" ? "#06d6a0" :
-        name === "فیبر و رادیو" ? "#8338ec" :
-        name === "ماموریت و پشتیبانی" ? "#ff9f1c" :
-        name === "سیویل سایت" ? "#8d6e63" :
+        name === "Rack" ? "#06d6a0" :
+        name === "فیبر نوری" ? "#8338ec" :
+        name === "سکتور" ? "#ff9f1c" :
+        name === "رادیو" ? "#8d6e63" :
         name === "تجربه میدانی" ? "#4d908e" :
         "#ffffff",
 
@@ -64,21 +64,21 @@ function normalizeLesson(raw, name) {
 const LESSONS = {
   // ✅ چهار درس اول – اولِ لیست
   flow: normalizeLesson(flow, "جریان داده"),
-  telecom: normalizeLesson(telecom, "ارتباطات رادیویی"),
+  telecom: normalizeLesson(telecom, "تلکام"),
   radiolinks: normalizeLesson(radiolinks, "لینک‌های رادیویی"),
-  modems: normalizeLesson(modems, "مودم‌های 4G و DSL"),
+  modems: normalizeLesson(modems, "مودم‌"),
   mobilesite: normalizeLesson(mobilesite, "سایت موبایل"),
 
   // بقیه بدون تغییر
   troubleshooting: normalizeLesson(troubleshooting, "عیب‌یابی"),
-  support: normalizeLesson(support, "پشتیبانی سایت"),
+  RRU: normalizeLesson(RRU, "RRU"),
   power: normalizeLesson(power, "برق و تجهیزات"),
 
   safety: normalizeLesson(safety, "ایمنی و HSE"),
-  height: normalizeLesson(height, "کار در ارتفاع"),
-  fiberadio: normalizeLesson(fiberadio, "فیبر و رادیو"),
-  mission: normalizeLesson(mission, "ماموریت و پشتیبانی"),
-  civil: normalizeLesson(civil, "سیویل سایت"),
+  Rack: normalizeLesson(Rack, "Rack"),
+  fiber: normalizeLesson(fiber, "فیبر نوری"),
+  Sector: normalizeLesson(Sector, "سکتور"),
+  radio: normalizeLesson(radio, "رادیو"),
   field: normalizeLesson(field, "تجربه میدانی"),
 };
 
