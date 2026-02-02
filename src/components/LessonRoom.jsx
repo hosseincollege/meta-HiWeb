@@ -43,13 +43,27 @@ function CameraFlyTo({ targetPosition, isFlying, setIsFlying }) {
 }
 
 /* ---------------- Tooltip Beside Node ---------------- */
-function TopicTooltip({ topic, position, onClose }) {
+function TopicTooltip({ topic, position, onClose, theme }) {
   if (!topic || !position) return null;
+
+  const isDark = theme === "dark";
 
   const detectDir = (text) => {
     const persianRegex = /[\u0600-\u06FF]/;
     return persianRegex.test(text) ? "rtl" : "ltr";
   };
+
+  // استایل‌های پویا برای تولتیپ
+  const bgStyle = isDark 
+    ? "rgba(15,15,20,0.92)" 
+    : "rgba(255,255,255,0.95)";
+  
+  const textColor = isDark ? "white" : "#0f172a";
+  const subTextColor = isDark ? "#e2e8f0" : "#334155";
+  const subTopicBg = isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)";
+  const borderColor = isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.15)";
+  const closeBtnBg = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
+  const closeBtnColor = isDark ? "white" : "#334155";
 
   return (
     <Html
@@ -61,15 +75,15 @@ function TopicTooltip({ topic, position, onClose }) {
         position[2] - 0,
       ]}
       style={{
-        background: "rgba(15,15,20,0.92)",
+        background: bgStyle,
         backdropFilter: "blur(14px)",
         padding: "40px",
         borderRadius: "26px",
         width: "1400px",
-        color: "white",
+        color: textColor,
         pointerEvents: "auto",
-        border: "2px solid rgba(255,255,255,0.28)",
-        boxShadow: "0 25px 60px rgba(0,0,0,0.65)",
+        border: `2px solid ${borderColor}`,
+        boxShadow: "0 25px 60px rgba(0,0,0,0.35)",
         fontFamily: "IRANSans, sans-serif",
       }}
     >
@@ -84,9 +98,9 @@ function TopicTooltip({ topic, position, onClose }) {
           width: "60px",
           height: "60px",
           borderRadius: "50%",
-          background: "rgba(255,255,255,0.15)",
+          background: closeBtnBg,
           border: "none",
-          color: "white",
+          color: closeBtnColor,
           cursor: "pointer",
           fontSize: "40px",
           fontWeight: "bold",
@@ -102,7 +116,7 @@ function TopicTooltip({ topic, position, onClose }) {
       <h4
         style={{
           margin: "0 0 25px 0",
-          color: "#38bdf8",
+          color: isDark ? "#38bdf8" : "#0284c7",
           fontSize: "4.2rem",
           fontWeight: "900",
           lineHeight: 1.3,
@@ -120,7 +134,7 @@ function TopicTooltip({ topic, position, onClose }) {
             marginTop: 12,
             fontSize: "3.5rem",
             lineHeight: 2.4,
-            color: "#e2e8f0",
+            color: subTextColor,
             fontWeight: "350",
             direction: detectDir(topic.content),
             textAlign: detectDir(topic.content) === "rtl" ? "right" : "left",
@@ -139,13 +153,13 @@ function TopicTooltip({ topic, position, onClose }) {
               marginTop: 30,
               padding: "22px 26px",
               borderRadius: 16,
-              background: "rgba(255,255,255,0.07)",
-              border: "1px solid rgba(255,255,255,0.15)",
+              background: subTopicBg,
+              border: `1px solid ${isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)"}`,
             }}
           >
             <strong
               style={{
-                color: "#fbbf24",
+                color: isDark ? "#fbbf24" : "#d97706",
                 fontSize: "4rem",
                 display: "block",
                 marginBottom: "12px",
@@ -160,7 +174,7 @@ function TopicTooltip({ topic, position, onClose }) {
               style={{
                 margin: 0,
                 fontSize: "4.2rem",
-                color: "#cbd5e1",
+                color: isDark ? "#cbd5e1" : "#475569",
                 lineHeight: 2.1,
                 direction: detectDir(s.content),
                 textAlign: detectDir(s.content) === "rtl" ? "right" : "left",
@@ -174,7 +188,7 @@ function TopicTooltip({ topic, position, onClose }) {
   );
 }
 
-export default function LessonRoom({ lesson, onBack }) {
+export default function LessonRoom({ lesson, onBack, on2D, theme = "dark" }) {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [targetPosition, setTargetPosition] = useState([0, 0, 0]);
   const [mode, setMode] = useState("random");
@@ -182,6 +196,9 @@ export default function LessonRoom({ lesson, onBack }) {
   
   // state برای فعال/غیرفعال کردن زوم
   const [zoomEnabled, setZoomEnabled] = useState(true);
+
+  // بررسی تم فعلی
+  const isDark = theme === "dark";
 
   const handleTopicClick = (topicData, positionArray) => {
     setSelectedTopic(topicData);
@@ -207,27 +224,36 @@ export default function LessonRoom({ lesson, onBack }) {
   };
 
   if (!lesson)
-    return <div style={{ color: "white", padding: 50 }}>در حال بارگذاری...</div>;
+    return <div style={{ color: isDark ? "white" : "black", padding: 50 }}>در حال بارگذاری...</div>;
 
   // استایل مشترک برای دکمه‌های آیکون‌دار
-  const iconButtonStyle = (isActive, color = "white") => ({
-    background: "transparent",
-    border: "none",
-    cursor: "pointer",
-    color: isActive ? color : "#64748b", // اگر فعال نیست خاکستری شود
-    padding: "4px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "color 0.2s ease",
-  });
+  const iconButtonStyle = (isActive, activeColor = "white") => {
+    // رنگ آیکون غیرفعال در تم روشن باید تیره‌تر باشد تا دیده شود
+    const inactiveColor = isDark ? "#64748b" : "#94a3b8";
+    
+    // اگر آیکون فعال باشد، از رنگ ورودی استفاده کن، اگر نه رنگ غیرفعال
+    const finalColor = isActive ? activeColor : inactiveColor;
+
+    return {
+      background: "transparent",
+      border: "none",
+      cursor: "pointer",
+      color: finalColor,
+      padding: "4px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      transition: "color 0.2s ease",
+    };
+  };
 
   return (
     <div style={{
       width: "100vw",
       height: "100vh",
-      background: "#000000",
-      position: "relative"
+      background: isDark ? "#000000" : "#f1f5f9", // تغییر پس‌زمینه اصلی
+      position: "relative",
+      transition: "background 0.3s ease"
     }}>
 
       {/* UI PANEL */}
@@ -239,13 +265,16 @@ export default function LessonRoom({ lesson, onBack }) {
           zIndex: 30,
           display: "flex",
           alignItems: "center",
-          gap: "8px", // کمی فاصله بیشتر برای خوانایی
-          background: "rgba(20,20,20,0.65)", // کمی تیره‌تر برای دیده شدن بهتر آیکون‌های سفید
+          gap: "8px", 
+          // تغییر رنگ پنل بالا
+          background: isDark ? "rgba(20,20,20,0.65)" : "rgba(255,255,255,0.85)", 
           backdropFilter: "blur(6px)",
           borderRadius: "8px",
           padding: "6px 10px",
-          border: "1px solid rgba(255,255,255,0.12)",
-          color: "white",
+          border: isDark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.1)",
+          color: isDark ? "white" : "#1e293b",
+          boxShadow: isDark ? "none" : "0 2px 10px rgba(0,0,0,0.05)",
+          transition: "all 0.3s ease"
         }}
       >
 
@@ -253,7 +282,7 @@ export default function LessonRoom({ lesson, onBack }) {
         <button
           onClick={() => setZoomEnabled(!zoomEnabled)}
           title={zoomEnabled ? "غیرفعال کردن زوم خودکار" : "فعال کردن زوم خودکار"}
-          style={iconButtonStyle(true, zoomEnabled ? "#4ade80" : "#64748b")}
+          style={iconButtonStyle(true, zoomEnabled ? "#4ade80" : (isDark ? "#64748b" : "#94a3b8"))}
         >
             {/* آیکون دوربین */}
             {zoomEnabled ? (
@@ -279,7 +308,7 @@ export default function LessonRoom({ lesson, onBack }) {
         <button
           onClick={handleResetView}
           title="نمای کلی (Reset)"
-          style={iconButtonStyle(true, "#7dd3fc")}
+          style={iconButtonStyle(true, "#7dd3fc")} // رنگ آبی روشن در هر دو تم خوب است، یا می‌توان برای لایت تیره‌تر کرد
         >
            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
@@ -301,7 +330,7 @@ export default function LessonRoom({ lesson, onBack }) {
         </button>
 
         {/* جداکننده عمودی */}
-        <div style={{ width: 1, height: 20, background: "rgba(255,255,255,0.2)", margin: "0 4px" }} />
+        <div style={{ width: 1, height: 20, background: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)", margin: "0 4px" }} />
 
         {/* عنوان درس */}
         <h3
@@ -309,7 +338,7 @@ export default function LessonRoom({ lesson, onBack }) {
             margin: "0 4px",
             fontSize: "1.1rem",
             fontWeight: "700",
-            color: "#e2e8f0",
+            color: isDark ? "#e2e8f0" : "#334155",
             whiteSpace: "nowrap",
             padding: 0,
           }}
@@ -362,6 +391,23 @@ export default function LessonRoom({ lesson, onBack }) {
                 <polyline points="2 12 12 17 22 12"></polyline>
              </svg>
           </button>
+
+
+          {/* جداکننده */}
+          <div style={{ width: 1, height: 20, background: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)", margin: "0 4px" }} />
+
+          {/* دکمه جدید: رفتن به صفحه 2D */}
+          <button
+            onClick={on2D}
+            title="نمای دو بعدی (صفحه جداگانه)"
+            style={iconButtonStyle(true, "#a78bfa")}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -391,7 +437,13 @@ export default function LessonRoom({ lesson, onBack }) {
           )}
         </group>
 
-        <TopicTooltip topic={selectedTopic} position={selectedTopic ? targetPosition : null} onClose={handleCloseTooltip} />
+        {/* پاس دادن تم به تولتیپ */}
+        <TopicTooltip 
+            topic={selectedTopic} 
+            position={selectedTopic ? targetPosition : null} 
+            onClose={handleCloseTooltip} 
+            theme={theme}
+        />
 
       </Canvas>
     </div>
