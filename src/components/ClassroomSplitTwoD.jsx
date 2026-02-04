@@ -92,6 +92,11 @@ const getThemeStyles = (isDark) => ({
         flexDirection: "column",
         gap: "6px",
         transition: "background-color 0.3s ease",
+
+        scrollbarWidth: isDark ? "thin" : "thin",
+        scrollbarColor: isDark
+            ? "#444 transparent"
+            : "#cbd5e1 transparent",
     },
     topicListPanel: {
         width: "260px",
@@ -104,12 +109,22 @@ const getThemeStyles = (isDark) => ({
         flexDirection: "column",
         gap: "8px",
         transition: "background-color 0.3s ease",
+
+        scrollbarWidth: isDark ? "thin" : "thin",
+        scrollbarColor: isDark
+            ? "#444 transparent"
+            : "#cbd5e1 transparent",
     },
     contentPanelArea: {
         flex: 1,
         padding: "14px 18px",
         overflowY: "auto",
         backgroundColor: isDark ? "transparent" : "#ffffff",
+
+        scrollbarWidth: isDark ? "thin" : "thin",
+        scrollbarColor: isDark
+            ? "#444 transparent"
+            : "#cbd5e1 transparent",
     },
     chapterButtonVertical: {
         padding: "8px 10px",
