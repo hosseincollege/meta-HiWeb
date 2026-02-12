@@ -2,19 +2,19 @@ import React, { useState, useCallback, useMemo } from "react";
 import LessonRoom from "./components/LessonRoom";
 import ClassroomSplitTwoD from "./components/ClassroomSplitTwoD";
 
-// ✅ چهار درس اصلی – اولِ ایمپورت‌ها
+// ✅ چهار درس اصلی
 import flow from "./lessons/flow";
 import telecom from "./lessons/telecom";
 import rahcom from "./lessons/rahcom";
-import modems from "./lessons/modems";
-import mobilesite from "./lessons/mobilesite";
+import ADSL from "./lessons/ADSL";
+import USO from "./lessons/USO";
 
 // ✅ بقیه دروس
 import troubleshooting from "./lessons/troubleshooting";
-import RRU from "./lessons/RRU";
-import power from "./lessons/power";
+import microwave from "./lessons/microwave";
+import VSAT from "./lessons/VSAT";
 import safety from "./lessons/safety";
-import Rack from "./lessons/Rack";
+import server from "./lessons/server";
 import fiber from "./lessons/fiber";
 import Sector from "./lessons/Sector";
 import radio from "./lessons/radio";
@@ -31,17 +31,17 @@ function normalizeLesson(raw, name) {
         name === "flow" ? "#457b9d" :
         name === "telecom" ? "#e63946" :
         name === "rahcom" ? "#7b2cbf" :
-        name === "modems" ? "#118ab2" :
-        name === "mobilesite" ? "#ef476f" :
-        name === "troubleshooting" ? "#2a9d8f" :
-        name === "RRU" ? "#f4a261" :
-        name === "power" ? "#fcca46" :
-        name === "safety" ? "#d90429" :
-        name === "Rack" ? "#06d6a0" :
+        name === "USO" ? "#ef476f" :
+        name === "ADSL" ? "#118ab2" :
         name === "fiber" ? "#8338ec" :
+        name === "VSAT" ? "#fcca46" :
+        name === "safety" ? "#d90429" :
+        name === "server" ? "#06d6a0" :
+        name === "microwave" ? "#f4a261" :
         name === "Sector" ? "#ff9f1c" :
         name === "radio" ? "#8d6e63" :
         name === "field" ? "#4d908e" :
+        name === "troubleshooting" ? "#2a9d8f" :
         "#ffffff",
       chapters: raw.map((c, i) => ({
         id: "ch" + i,
@@ -59,27 +59,27 @@ function normalizeLesson(raw, name) {
 }
 
 // ===============================
-// ✅ داده نهایی همه درس‌ها
+// ✅ داده نهایی همه درس‌ها (مرتب‌شده)
 // ===============================
 const LESSONS_DATA = {
   flow: normalizeLesson(flow, "flow"),
   telecom: normalizeLesson(telecom, "telecom"),
   rahcom: normalizeLesson(rahcom, "rahcom"),
-  modems: normalizeLesson(modems, "modems"),
-  mobilesite: normalizeLesson(mobilesite, "mobilesite"),
-  troubleshooting: normalizeLesson(troubleshooting, "troubleshooting"),
-  RRU: normalizeLesson(RRU, "RRU"),
-  power: normalizeLesson(power, "power"),
-  safety: normalizeLesson(safety, "safety"),
-  Rack: normalizeLesson(Rack, "Rack"),
+  USO: normalizeLesson(USO, "USO"),
+  ADSL: normalizeLesson(ADSL, "ADSL"),
   fiber: normalizeLesson(fiber, "fiber"),
+  VSAT: normalizeLesson(VSAT, "VSAT"),
+  safety: normalizeLesson(safety, "safety"),
+  server: normalizeLesson(server, "server"),
+  microwave: normalizeLesson(microwave, "microwave"),
   Sector: normalizeLesson(Sector, "Sector"),
   radio: normalizeLesson(radio, "radio"),
   field: normalizeLesson(field, "field"),
+  troubleshooting: normalizeLesson(troubleshooting, "troubleshooting"),
 };
 
 // ===============================
-// ✅ استایل‌ها (دارک = بدون تغییر)
+// ✅ استایل دارک
 // ===============================
 function getDarkStyles() {
   return {
@@ -174,7 +174,9 @@ function getDarkStyles() {
   };
 }
 
-// ✅ استایل لایت (جدید)
+// ===============================
+// ✅ استایل لایت
+// ===============================
 function getLightStyles() {
   return {
     ...getDarkStyles(),
@@ -239,7 +241,7 @@ const LessonCard = ({ lesson, onSelect3D, onSelect2D, styles }) => {
 export default function App() {
   const [activeLesson, setActiveLesson] = useState(null);
   const [viewMode, setViewMode] = useState(null);
-  const [themeMode, setThemeMode] = useState("system"); // system | dark | light
+  const [themeMode, setThemeMode] = useState("system");
 
   const systemIsDark =
     window.matchMedia &&
@@ -302,7 +304,7 @@ export default function App() {
         Theme: {themeMode}
       </button>
 
-      <h1 style={styles.header}>دانشگاه متاورس</h1>
+      <h1 style={styles.header}>های وب</h1>
       <p style={styles.subHeader}>
         روی کارت کلیک کنید (۳بعدی) یا دکمه 2D را بزنید
       </p>
